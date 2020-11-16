@@ -10,10 +10,6 @@ num_rows <- nrow(raw_data)
 num_states <- length(unique(raw_data$state))
 num_timestamps <- length(unique(raw_data$timestamp))
 
-# The number of timestamps varies for each state
-timestamps_by_state <- raw_data %>% 
-  group_by(state) %>% 
-  count()
 
 # Formatting: split out state name from electoral votes
 # Add biden and trump vote columns
@@ -34,7 +30,11 @@ check <- data %>%
          done_correctly = if_else(total_check == total_votes_count, 1, 0)) %>%
   summarize(total_correct = sum(done_correctly))
   
-  
+# The number of timestamps varies for each state
+timestamps_by_state <- data %>% 
+  group_by(state) %>% 
+  count() %>% 
+  arrange(-n)
 
 # How many reported timestamps exist for each state?
 
